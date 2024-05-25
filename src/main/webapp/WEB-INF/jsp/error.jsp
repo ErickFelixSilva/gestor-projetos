@@ -12,7 +12,7 @@
 <div class="container">
     <h1>Erro</h1>
     <p>${mensagem}</p>
-    <a href="/" class="btn btn-primary">Home</a>
+    <a href="/projetos" class="btn btn-primary">Home</a>
 </div>
 </body>
 </html>

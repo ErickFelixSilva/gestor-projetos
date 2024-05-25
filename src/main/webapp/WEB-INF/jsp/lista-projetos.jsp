@@ -28,10 +28,10 @@
                         <td>${projeto.previsaoTermino}</td>
                         <td>${projeto.status.descricao}</td>
                         <td>
-                            <a href="/projetos/${projeto.id}" class="btn btn-info">View</a>
-                            <a href="/projetos/editar/${projeto.id}" class="btn btn-warning">Edit</a>
+                            <a href="/projetos/${projeto.id}" class="btn btn-primary">Detalhes</a>
+                            <a href="/projetos/editar/${projeto.id}" class="btn btn-primary">Editar</a>
                             <form action="/projetos/excluir/${projeto.id}" method="post" style="display:inline;">
-                                <button type="submit" class="btn btn-danger">Excluir</button>
+                                <button type="submit" class="btn btn-secondary">Excluir</button>
                             </form>
                         </td>
                     </tr>
