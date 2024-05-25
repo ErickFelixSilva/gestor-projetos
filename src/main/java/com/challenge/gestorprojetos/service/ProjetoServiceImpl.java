@@ -1,5 +1,6 @@
 package com.challenge.gestorprojetos.service;
 
+import com.challenge.gestorprojetos.exception.ProjetoNaoEncontradoException;
 import com.challenge.gestorprojetos.model.Projeto;
 import com.challenge.gestorprojetos.repository.ProjetoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class ProjetoServiceImpl implements ProjetoService {
     @Override
     public Projeto projetoPorId(Long id) {
         return projetoRepository.findById(id).orElseThrow(() ->
-            new NoSuchElementException("Projeto com id %d não encontrado".formatted(id)));
+            new ProjetoNaoEncontradoException("Projeto com id %d não encontrado".formatted(id)));
     }
 
     @Override
@@ -35,7 +36,7 @@ public class ProjetoServiceImpl implements ProjetoService {
     }
 
     @Override
-    public void excluirProjeto(Long id) {
-        projetoRepository.deleteById(id);
+    public void excluirProjeto(Projeto projeto) {
+        projetoRepository.delete(projeto);
     }
 }

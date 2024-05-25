@@ -8,5 +8,5 @@ public interface ProjetoService {
     List<Projeto> recuperarProjetos();
     Projeto projetoPorId(Long id);
     void salvarProjeto(Projeto projeto);
-    void excluirProjeto(Long id);
+    void excluirProjeto(Projeto projeto);
 }

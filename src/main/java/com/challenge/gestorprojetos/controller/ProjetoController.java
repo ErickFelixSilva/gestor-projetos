@@ -1,6 +1,7 @@
 package com.challenge.gestorprojetos.controller;
 
 import com.challenge.gestorprojetos.model.Projeto;
+import com.challenge.gestorprojetos.model.Status;
 import com.challenge.gestorprojetos.service.ProjetoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ public class ProjetoController {
     @GetMapping("/novo")
     public String novoProjeto(Model model) {
         model.addAttribute("projeto", new Projeto());
+        model.addAttribute("todosStatus", Status.values());
         return "formulario-projeto";
     }
 
@@ -43,6 +45,7 @@ public class ProjetoController {
     public String editarProjeto(@PathVariable Long id, Model model) {
         Projeto projeto = projetoService.projetoPorId(id);
         model.addAttribute("projeto", projeto);
+        model.addAttribute("todosStatus", Status.values());
         return "formulario-projeto";
     }
 
@@ -55,7 +58,12 @@ public class ProjetoController {
 
     @PostMapping("/excluir/{id}")
     public String excluir(@PathVariable Long id) {
-        projetoService.excluirProjeto(id);
+        Projeto projeto = projetoService.projetoPorId(id);
+        if (projeto.getStatus() == Status.INICIADO || projeto.getStatus() == Status.EM_ANDAMENTO ||
+                projeto.getStatus() == Status.ENCERRADO) {
+            throw new IllegalArgumentException("Não é possível excluir projeto com o status: " + projeto.getStatus().getDescricao());
+        }
+        projetoService.excluirProjeto(projeto);
         return "redirect:/projetos";
     }
 }
