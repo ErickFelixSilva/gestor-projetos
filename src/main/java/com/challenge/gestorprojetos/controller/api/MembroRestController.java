@@ -1,4 +1,4 @@
-package com.example.portfolio.controller.api;
+package com.challenge.gestorprojetos.controller.api;
 
 import com.challenge.gestorprojetos.model.Membro;
 import com.challenge.gestorprojetos.service.MembroService;
@@ -28,5 +28,10 @@ public class MembroRestController {
     public ResponseEntity<Membro> adicionarMembro(@RequestBody Membro membro) {
         Membro savedMember = membroService.salvarMembro(membro);
         return ResponseEntity.ok(savedMember);
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> testEndpoint() {
+        return ResponseEntity.ok("Endpoint is working");
     }
 }

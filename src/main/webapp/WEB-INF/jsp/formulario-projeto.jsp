@@ -25,7 +25,14 @@
         </div>
         <div class="form-group">
             <label for="gerenteResponsavel">Gerente responsável</label>
-            <input type="text" class="form-control" id="gerenteResponsavel" name="gerenteResponsavel" value="${projeto.gerenteResponsavel}" required />
+            <select class="form-control" id="gerenteResponsavel" name="gerenteResponsavel" required ${membros.isEmpty() ? 'disabled' : ''}>
+                <c:forEach var="membro" items="${membros}">
+                    <option value="${membro.id}" ${membro.id == project.gerenteResponsavel.id ? 'selected' : ''}>${membro.nome}</option>
+                </c:forEach>
+            </select>
+            <c:if test="${membros.isEmpty()}">
+                <small class="text-danger">Nenhum membro disponível no cadastro.</small>
+            </c:if>
         </div>
         <div class="form-group">
             <label for="status">Status</label>

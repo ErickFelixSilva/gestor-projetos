@@ -37,4 +37,9 @@ public class Membro {
     public void setCargo(String cargo) {
         this.cargo = cargo;
     }
+
+    @Override
+    public String toString() {
+        return "%s - %s".formatted(nome, cargo);
+    }
 }

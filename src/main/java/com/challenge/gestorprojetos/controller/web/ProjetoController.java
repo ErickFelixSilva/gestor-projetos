@@ -1,7 +1,9 @@
-package com.challenge.gestorprojetos.controller;
+package com.challenge.gestorprojetos.controller.web;
 
+import com.challenge.gestorprojetos.model.Membro;
 import com.challenge.gestorprojetos.model.Projeto;
 import com.challenge.gestorprojetos.model.Status;
+import com.challenge.gestorprojetos.service.MembroService;
 import com.challenge.gestorprojetos.service.ProjetoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,10 +17,12 @@ import java.util.List;
 public class ProjetoController {
 
     private final ProjetoService projetoService;
+    private final MembroService membroService;
 
     @Autowired
-    public ProjetoController(ProjetoService projetoService) {
+    public ProjetoController(ProjetoService projetoService, MembroService membroService) {
         this.projetoService = projetoService;
+        this.membroService = membroService;
     }
 
     @GetMapping
@@ -32,6 +36,7 @@ public class ProjetoController {
     public String novoProjeto(Model model) {
         model.addAttribute("projeto", new Projeto());
         model.addAttribute("todosStatus", Status.values());
+        model.addAttribute("membros", membroService.recuperarMembros());
         return "formulario-projeto";
     }
 
@@ -46,6 +51,7 @@ public class ProjetoController {
         Projeto projeto = projetoService.projetoPorId(id);
         model.addAttribute("projeto", projeto);
         model.addAttribute("todosStatus", Status.values());
+        model.addAttribute("membros", membroService.recuperarMembros());
         return "formulario-projeto";
     }
 
