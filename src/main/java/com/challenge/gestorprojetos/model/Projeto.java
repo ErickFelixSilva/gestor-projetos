@@ -1,11 +1,9 @@
 package com.challenge.gestorprojetos.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Projeto {
@@ -18,10 +16,14 @@ public class Projeto {
     private LocalDate dataInicio;
     private LocalDate previsaoTermino;
     private LocalDate dataRealTermino;
-    private String gerenteResponsavel;
     private Double orcamentoTotal;
     private String descricao;
+    @Enumerated(EnumType.STRING)
     private Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "gerente_id")
+    private Membro gerenteResponsavel;
 
     public Long getId() {
         return id;
@@ -63,11 +65,11 @@ public class Projeto {
         this.dataRealTermino = dataRealTermino;
     }
 
-    public String getGerenteResponsavel() {
+    public Membro getGerenteResponsavel() {
         return gerenteResponsavel;
     }
 
-    public void setGerenteResponsavel(String gerenteResponsavel) {
+    public void setGerenteResponsavel(Membro gerenteResponsavel) {
         this.gerenteResponsavel = gerenteResponsavel;
     }
 
