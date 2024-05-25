@@ -4,6 +4,7 @@ import com.challenge.gestorprojetos.model.Projeto;
 import com.challenge.gestorprojetos.service.ProjetoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,37 +21,41 @@ public class ProjetoController {
     }
 
     @GetMapping
-    public String listarProjetos() {
+    public String listarProjetos(Model model) {
         List<Projeto> projetos = projetoService.recuperarProjetos();
-        return "";
+        model.addAttribute("projetos", projetos);
+        return "lista-projetos";
     }
 
     @GetMapping("/novo")
-    public String novoProjeto() {
-        return "";
+    public String novoProjeto(Model model) {
+        model.addAttribute("projeto", new Projeto());
+        return "formulario-projeto";
     }
 
     @PostMapping
     public String salvarProjeto(@ModelAttribute Projeto projeto) {
         projetoService.salvarProjeto(projeto);
-        return "";
+        return "redirect:/projetos";
     }
 
     @GetMapping("/editar/{id}")
-    public String editarProjeto(@PathVariable Long id) {
+    public String editarProjeto(@PathVariable Long id, Model model) {
         Projeto projeto = projetoService.projetoPorId(id);
-        return "";
+        model.addAttribute("projeto", projeto);
+        return "formulario-projeto";
     }
 
     @GetMapping("/{id}")
-    public String detalharProjeto(@PathVariable Long id) {
+    public String detalharProjeto(@PathVariable Long id, Model model) {
         Projeto projeto = projetoService.projetoPorId(id);
-        return "";
+        model.addAttribute("projeto", projeto);
+        return "detalhes-projeto";
     }
 
     @PostMapping("/excluir/{id}")
     public String excluir(@PathVariable Long id) {
         projetoService.excluirProjeto(id);
-        return "";
+        return "redirect:/projetos";
     }
 }
