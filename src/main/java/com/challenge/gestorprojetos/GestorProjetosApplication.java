@@ -1,4 +1,4 @@
-package com.challenge.gestor_projetos;
+package com.challenge.gestorprojetos;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
