@@ -29,9 +29,4 @@ public class MembroRestController {
         Membro savedMember = membroService.salvarMembro(membro);
         return ResponseEntity.ok(savedMember);
     }
-
-    @GetMapping("/test")
-    public ResponseEntity<String> testEndpoint() {
-        return ResponseEntity.ok("Endpoint is working");
-    }
 }
