@@ -10,11 +10,11 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ProjetoNaoEncontradoException.class)
+    @ExceptionHandler({ProjetoNaoEncontradoException.class, IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ModelAndView handleProjetoNaoEncontradoException(ProjetoNaoEncontradoException ex) {
+    public ModelAndView handleProjetoNaoEncontradoException(RuntimeException ex) {
         ModelAndView modelAndView = new ModelAndView("error");
-        modelAndView.addObject("message", ex.getMessage());
+        modelAndView.addObject("mensagem", ex.getMessage());
         return modelAndView;
     }
 }

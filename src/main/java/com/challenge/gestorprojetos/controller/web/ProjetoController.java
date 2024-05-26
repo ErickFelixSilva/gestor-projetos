@@ -11,9 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/projetos")
@@ -43,7 +42,7 @@ public class ProjetoController {
 
     @PostMapping
     public String salvarProjeto(@ModelAttribute Projeto projeto, @RequestParam(name = "funcionarios", required = false) List<String> funcionariosSelecionados) {
-        var idsFuncionariosSelecionados = funcionariosSelecionados.stream().map(Long::valueOf).toList();
+        var idsFuncionariosSelecionados = Optional.ofNullable(funcionariosSelecionados).map(f -> f.stream().map(Long::valueOf).toList()).orElse(Collections.emptyList());
         var funcinariosSelecionados = membroService.membrosPorId(idsFuncionariosSelecionados);
         projeto.setFuncionarios(funcinariosSelecionados);
         projetoService.salvarProjeto(projeto);
@@ -60,17 +59,15 @@ public class ProjetoController {
     @GetMapping("/{id}")
     public String detalharProjeto(@PathVariable Long id, Model model) {
         Projeto projeto = projetoService.projetoPorId(id);
+        String funcionarios = projeto.getFuncionarios().stream().map(Membro::toString).collect(Collectors.joining(", "));
         model.addAttribute("projeto", projeto);
+        model.addAttribute("funcionarios", funcionarios);
         return "detalhes-projeto";
     }
 
     @PostMapping("/excluir/{id}")
     public String excluir(@PathVariable Long id) {
         Projeto projeto = projetoService.projetoPorId(id);
-        if (projeto.getStatus() == Status.INICIADO || projeto.getStatus() == Status.EM_ANDAMENTO ||
-                projeto.getStatus() == Status.ENCERRADO) {
-            throw new IllegalArgumentException("Não é possível excluir projeto com o status: " + projeto.getStatus().getDescricao());
-        }
         projetoService.excluirProjeto(projeto);
         return "redirect:/projetos";
     }

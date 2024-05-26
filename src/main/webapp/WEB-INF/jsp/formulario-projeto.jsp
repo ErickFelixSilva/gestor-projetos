@@ -12,19 +12,19 @@
     <form action="/projetos" method="post">
         <input type="hidden" name="id" value="${projeto.id}" />
         <div class="form-group">
-            <label for="nome">Nome</label>
+            <label for="nome">Nome*</label>
             <input type="text" class="form-control" id="nome" name="nome" value="${projeto.nome}" required />
         </div>
         <div class="form-group">
-            <label for="dataInicio">Data início</label>
+            <label for="dataInicio">Data início*</label>
             <input type="date" class="form-control" id="dataInicio" name="dataInicio" value="${projeto.dataInicio}" required />
         </div>
         <div class="form-group">
-            <label for="previsaoTermino">Data prevista término</label>
+            <label for="previsaoTermino">Data prevista término*</label>
             <input type="date" class="form-control" id="previsaoTermino" name="previsaoTermino" value="${projeto.previsaoTermino}" required />
         </div>
         <div class="form-group">
-            <label for="gerenteResponsavel">Gerente responsável</label>
+            <label for="gerenteResponsavel">Gerente responsável*</label>
             <select class="form-control" id="gerenteResponsavel" name="gerenteResponsavel" required ${membros.isEmpty() ? 'disabled' : ''}>
                 <c:forEach var="membro" items="${membros}">
                     <option value="${membro.id}" ${membro.id == projeto.gerenteResponsavel.id ? 'selected' : ''}>${membro.nome}</option>
@@ -44,7 +44,7 @@
         </div>
         <div class="form-group">
             <label for="descricao">Descrição</label>
-            <textarea class="form-control" id="descricao" name="descricao" required>${projeto.descricao}</textarea>
+            <textarea class="form-control" id="descricao" name="descricao">${projeto.descricao}</textarea>
         </div>
         <div class="form-group">
             <label for="funcionarios">Funcionários</label>
@@ -58,7 +58,7 @@
                 <small class="text-danger">Nenhum funcionário disponível no cadastro.</small>
             </c:if>
         </div>
-        <button type="submit" class="btn btn-success">Salvar</button>
+        <button type="submit" class="btn btn-success" ${membros.isEmpty() ? 'disabled' : ''}>Salvar</button>
         <a href="/projetos" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
