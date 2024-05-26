@@ -38,10 +38,13 @@ public class ProjetoController {
     }
 
     @PostMapping
-    public String salvarProjeto(@ModelAttribute Projeto projeto, @RequestParam(name = "funcionarios", required = false) List<String> funcionariosSelecionados) {
+    public String salvarProjeto(@ModelAttribute Projeto projeto,
+                                @RequestParam(name = "funcionarios", required = false) List<String> funcionariosSelecionados,
+                                @RequestParam(name = "valorOrcamento", required = false) String valorOrcamento) {
         var idsFuncionariosSelecionados = Optional.ofNullable(funcionariosSelecionados).map(f -> f.stream().map(Long::valueOf).toList()).orElse(Collections.emptyList());
         var funcinariosSelecionados = membroService.membrosPorId(idsFuncionariosSelecionados);
         projeto.setFuncionarios(funcinariosSelecionados);
+        projeto.setOrcamentoTotal(removerFormatoMonetario(valorOrcamento));
         projetoService.salvarProjeto(projeto);
         return "redirect:/projetos";
     }
@@ -76,11 +79,25 @@ public class ProjetoController {
                     .orElse(false);
             return new Item(f.getId().toString(), f.getNome(), selecionado);
         }).toList();
+        var orcamento = Optional.ofNullable(projeto).map(Projeto::getOrcamentoTotal).orElse(0d);
 
         model.addAttribute("projeto", Optional.ofNullable(projeto).orElse(new Projeto()));
         model.addAttribute("todosStatus", Status.values());
         model.addAttribute("riscos", Risco.values());
         model.addAttribute("membros", membroService.recuperarMembros());
+        model.addAttribute("valorOrcamento", orcamento.toString());
         model.addAttribute("funcionarios", funcionarios);
+    }
+
+    private Double removerFormatoMonetario(String valorMonetario) {
+        if (valorMonetario != null) {
+            valorMonetario = valorMonetario.replaceAll("[^\\d,]", "").replace(",", ".");
+            try {
+                return Double.parseDouble(valorMonetario);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Valor inválido: " + valorMonetario);
+            }
+        }
+        return null;
     }
 }

@@ -5,6 +5,16 @@
 <head>
     <title>Formulário Projeto</title>
     <link rel="stylesheet" href="/webjars/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function formatoMonetario(input) {
+            let value = input.value.replace(/\D/g, '');
+            value = (value / 100).toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
+            input.value = value;
+        }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -22,6 +32,15 @@
         <div class="form-group">
             <label for="previsaoTermino">Data prevista término*</label>
             <input type="date" class="form-control" id="previsaoTermino" name="previsaoTermino" value="${projeto.previsaoTermino}" required />
+        </div>
+        <div class="form-group">
+            <label for="dataRealTermino">Data real término</label>
+            <input type="date" class="form-control" id="dataRealTermino" name="dataRealTermino" value="${projeto.dataRealTermino}" />
+        </div>
+        <div class="d-flex flex-column form-group">
+            <label for="orcamentoTotal">Valor em Reais</label>
+            <input class="p-1" type="text" id="orcamentoTotal" value="${projeto.orcamentoTotal}"
+                name="valorOrcamento" oninput="formatoMonetario(this)" placeholder="R$ 0,00" required>
         </div>
         <div class="form-group">
             <label for="gerenteResponsavel">Gerente responsável*</label>

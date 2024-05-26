@@ -14,6 +14,7 @@
         <p><strong>Data início:</strong> ${projeto.dataInicio}</p>
         <p><strong>Data prevista término:</strong> ${projeto.previsaoTermino}</p>
         <p><strong>Data real término:</strong> ${projeto.dataRealTermino}</p>
+        <p><strong>Orçamento total:</strong> R$ ${projeto.orcamentoTotal}</p>
         <p><strong>Gerente Responsável:</strong> ${projeto.gerenteResponsavel}</p>
         <p><strong>Status:</strong> ${projeto.status.descricao}</p>
         <p><strong>Risco:</strong> ${projeto.risco.descricao}</p>
