@@ -16,6 +16,7 @@
         <p><strong>Data real término:</strong> ${projeto.dataRealTermino}</p>
         <p><strong>Gerente Responsável:</strong> ${projeto.gerenteResponsavel}</p>
         <p><strong>Status:</strong> ${projeto.status.descricao}</p>
+        <p><strong>Risco:</strong> ${projeto.risco.descricao}</p>
         <p><strong>Descrição:</strong> ${projeto.descricao}</p>
         <p><strong>Funcionários:</strong> ${funcionarios}</p>
         <a href="/projetos" class="btn btn-primary">Voltar para listagem</a>

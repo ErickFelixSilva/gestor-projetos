@@ -1,9 +1,6 @@
 package com.challenge.gestorprojetos.controller.web;
 
-import com.challenge.gestorprojetos.model.Item;
-import com.challenge.gestorprojetos.model.Membro;
-import com.challenge.gestorprojetos.model.Projeto;
-import com.challenge.gestorprojetos.model.Status;
+import com.challenge.gestorprojetos.model.*;
 import com.challenge.gestorprojetos.service.MembroService;
 import com.challenge.gestorprojetos.service.ProjetoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +79,7 @@ public class ProjetoController {
 
         model.addAttribute("projeto", Optional.ofNullable(projeto).orElse(new Projeto()));
         model.addAttribute("todosStatus", Status.values());
+        model.addAttribute("riscos", Risco.values());
         model.addAttribute("membros", membroService.recuperarMembros());
         model.addAttribute("funcionarios", funcionarios);
     }

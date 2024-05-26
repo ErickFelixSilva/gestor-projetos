@@ -21,6 +21,9 @@ public class Projeto {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Enumerated(EnumType.STRING)
+    private Risco risco;
+
     @ManyToOne
     @JoinColumn(name = "gerente_id")
     private Membro gerenteResponsavel;
@@ -95,6 +98,14 @@ public class Projeto {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Risco getRisco() {
+        return risco;
+    }
+
+    public void setRisco(Risco risco) {
+        this.risco = risco;
     }
 
     public Double getOrcamentoTotal() {

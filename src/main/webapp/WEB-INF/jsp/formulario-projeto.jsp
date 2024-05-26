@@ -43,6 +43,14 @@
             </select>
         </div>
         <div class="form-group">
+            <label for="risco">Nível de risco</label>
+            <select class="form-control" id="risco" name="risco" required>
+                <c:forEach var="risco" items="${riscos}">
+                    <option value="${risco}" ${risco == projeto.risco ? 'selected' : ''}>${risco.descricao}</option>
+                </c:forEach>
+            </select>
+        </div>
+        <div class="form-group">
             <label for="descricao">Descrição</label>
             <textarea class="form-control" id="descricao" name="descricao">${projeto.descricao}</textarea>
         </div>
