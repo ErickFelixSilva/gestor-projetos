@@ -25,6 +25,14 @@ public class Projeto {
     @JoinColumn(name = "gerente_id")
     private Membro gerenteResponsavel;
 
+    @ManyToMany
+    @JoinTable(
+            name = "projeto_funcionarios",
+            joinColumns = @JoinColumn(name = "projeto_id"),
+            inverseJoinColumns = @JoinColumn(name = "membro_id")
+    )
+    private List<Membro> funcionarios;
+
     public Long getId() {
         return id;
     }
@@ -95,5 +103,13 @@ public class Projeto {
 
     public void setOrcamentoTotal(Double orcamentoTotal) {
         this.orcamentoTotal = orcamentoTotal;
+    }
+
+    public List<Membro> getFuncionarios() {
+        return funcionarios;
+    }
+
+    public void setFuncionarios(List<Membro> funcionarios) {
+        this.funcionarios = funcionarios;
     }
 }

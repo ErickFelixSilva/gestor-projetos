@@ -27,7 +27,7 @@
             <label for="gerenteResponsavel">Gerente responsável</label>
             <select class="form-control" id="gerenteResponsavel" name="gerenteResponsavel" required ${membros.isEmpty() ? 'disabled' : ''}>
                 <c:forEach var="membro" items="${membros}">
-                    <option value="${membro.id}" ${membro.id == project.gerenteResponsavel.id ? 'selected' : ''}>${membro.nome}</option>
+                    <option value="${membro.id}" ${membro.id == projeto.gerenteResponsavel.id ? 'selected' : ''}>${membro.nome}</option>
                 </c:forEach>
             </select>
             <c:if test="${membros.isEmpty()}">
@@ -45,6 +45,18 @@
         <div class="form-group">
             <label for="descricao">Descrição</label>
             <textarea class="form-control" id="descricao" name="descricao" required>${projeto.descricao}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="funcionarios">Funcionários</label>
+            <br>
+            <c:forEach var="funcionario" items="${funcionarios}">
+                <input type="checkbox" name="funcionarios" value="${funcionario.id}" <c:if test="${funcionario.selecionado}">checked</c:if>>
+                    ${funcionario.nome}<br>
+                </input>
+            </c:forEach>
+            <c:if test="${funcionarios.isEmpty()}">
+                <small class="text-danger">Nenhum funcionário disponível no cadastro.</small>
+            </c:if>
         </div>
         <button type="submit" class="btn btn-success">Salvar</button>
         <a href="/projetos" class="btn btn-secondary">Cancelar</a>

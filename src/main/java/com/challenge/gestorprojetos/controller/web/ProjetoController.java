@@ -1,5 +1,6 @@
 package com.challenge.gestorprojetos.controller.web;
 
+import com.challenge.gestorprojetos.model.Item;
 import com.challenge.gestorprojetos.model.Membro;
 import com.challenge.gestorprojetos.model.Projeto;
 import com.challenge.gestorprojetos.model.Status;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/projetos")
@@ -34,14 +37,15 @@ public class ProjetoController {
 
     @GetMapping("/novo")
     public String novoProjeto(Model model) {
-        model.addAttribute("projeto", new Projeto());
-        model.addAttribute("todosStatus", Status.values());
-        model.addAttribute("membros", membroService.recuperarMembros());
+        carregarModelo(model, null);
         return "formulario-projeto";
     }
 
     @PostMapping
-    public String salvarProjeto(@ModelAttribute Projeto projeto) {
+    public String salvarProjeto(@ModelAttribute Projeto projeto, @RequestParam(name = "funcionarios", required = false) List<String> funcionariosSelecionados) {
+        var idsFuncionariosSelecionados = funcionariosSelecionados.stream().map(Long::valueOf).toList();
+        var funcinariosSelecionados = membroService.membrosPorId(idsFuncionariosSelecionados);
+        projeto.setFuncionarios(funcinariosSelecionados);
         projetoService.salvarProjeto(projeto);
         return "redirect:/projetos";
     }
@@ -49,9 +53,7 @@ public class ProjetoController {
     @GetMapping("/editar/{id}")
     public String editarProjeto(@PathVariable Long id, Model model) {
         Projeto projeto = projetoService.projetoPorId(id);
-        model.addAttribute("projeto", projeto);
-        model.addAttribute("todosStatus", Status.values());
-        model.addAttribute("membros", membroService.recuperarMembros());
+        carregarModelo(model, projeto);
         return "formulario-projeto";
     }
 
@@ -71,5 +73,19 @@ public class ProjetoController {
         }
         projetoService.excluirProjeto(projeto);
         return "redirect:/projetos";
+    }
+
+    private void carregarModelo(Model model, Projeto projeto) {
+        var funcionarios = membroService.recuperarFuncionarios().stream().map(f -> {
+            var selecionado = Optional.ofNullable(projeto)
+                    .map(p -> p.getFuncionarios().contains(f))
+                    .orElse(false);
+            return new Item(f.getId().toString(), f.getNome(), selecionado);
+        }).toList();
+
+        model.addAttribute("projeto", Optional.ofNullable(projeto).orElse(new Projeto()));
+        model.addAttribute("todosStatus", Status.values());
+        model.addAttribute("membros", membroService.recuperarMembros());
+        model.addAttribute("funcionarios", funcionarios);
     }
 }
