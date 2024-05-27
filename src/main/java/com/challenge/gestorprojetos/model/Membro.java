@@ -1,9 +1,6 @@
 package com.challenge.gestorprojetos.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Membro {
@@ -11,6 +8,8 @@ public class Membro {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String nome;
     private String cargo;
 

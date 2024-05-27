@@ -40,6 +40,9 @@ public class MembroServiceImpl implements MembroService {
 
     @Override
     public Membro salvarMembro(Membro membro) {
+        if (membro.getNome() == null || membro.getNome().isEmpty()) {
+            throw new IllegalArgumentException("Para cadastrar um membro é necessário especificar um nome");
+        }
         return membroRepository.save(membro);
     }
 
