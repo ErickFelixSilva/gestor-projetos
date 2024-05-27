@@ -70,6 +70,18 @@ class MembroServiceImplTest {
     }
 
     @Test
+    void deveRecuperarMembros() {
+        assertDoesNotThrow(() -> membroService.recuperarMembros());
+        verify(membroRepository, times(1)).findAll();
+    }
+
+    @Test
+    void deveRecuperarMembrosFuncionarios() {
+        assertDoesNotThrow(() -> membroService.recuperarFuncionarios());
+        verify(membroRepository, times(1)).findByCargo("Funcionário");
+    }
+
+    @Test
     void deveExcluirMembro() {
         assertDoesNotThrow(() -> membroService.excluirMembro(new Membro()));
         verify(membroRepository, times(1)).delete(any(Membro.class));
