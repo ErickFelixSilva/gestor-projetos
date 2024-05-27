@@ -6,14 +6,13 @@ import com.challenge.gestorprojetos.repository.MembroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.sql.rowset.CachedRowSet;
 import java.util.List;
 
 @Service
 public class MembroServiceImpl implements MembroService {
 
     private final MembroRepository membroRepository;
-    private final static String CARGO_FUNCIONARIO = "Funcionário";
+    private static final String CARGO_FUNCIONARIO = "Funcionário";
 
     @Autowired
     public MembroServiceImpl(MembroRepository membroRepository) {

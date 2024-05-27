@@ -1,7 +1,6 @@
 package com.challenge.gestorprojetos.service;
 
 import com.challenge.gestorprojetos.model.Membro;
-import com.challenge.gestorprojetos.model.Projeto;
 
 import java.util.List;
 
