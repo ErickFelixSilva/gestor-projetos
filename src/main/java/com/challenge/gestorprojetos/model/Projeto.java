@@ -12,6 +12,7 @@ public class Projeto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String nome;
     private LocalDate dataInicio;
     private LocalDate previsaoTermino;
@@ -19,13 +20,14 @@ public class Projeto {
     private Double orcamentoTotal;
     private String descricao;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Status status;
 
     @Enumerated(EnumType.STRING)
     private Risco risco;
 
     @ManyToOne
-    @JoinColumn(name = "gerente_id")
+    @JoinColumn(name = "gerente_id", nullable = false)
     private Membro gerenteResponsavel;
 
     @ManyToMany

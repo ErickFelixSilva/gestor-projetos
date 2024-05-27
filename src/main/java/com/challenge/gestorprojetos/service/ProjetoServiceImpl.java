@@ -32,8 +32,20 @@ public class ProjetoServiceImpl implements ProjetoService {
 
     @Override
     public void salvarProjeto(Projeto projeto) {
+        if (projeto.getNome() == null || projeto.getNome().isEmpty()) {
+            throw new IllegalArgumentException("É necessário informar um nome para o projeto");
+        }
+        if (projeto.getStatus() == null) {
+            throw new IllegalArgumentException("É necessário informar um status para o projeto");
+        }
         if (projeto.getGerenteResponsavel() == null) {
             throw new IllegalArgumentException("É necessário informar um gerente para o projeto");
+        }
+        if (projeto.getDataInicio() != null && projeto.getDataInicio().isAfter(projeto.getPrevisaoTermino())) {
+            throw new IllegalArgumentException("A data inicial do projeto deve ser anterior à data prevista de término");
+        }
+        if (projeto.getDataRealTermino() != null && projeto.getDataInicio().isAfter(projeto.getDataRealTermino())) {
+            throw new IllegalArgumentException("A data inicial do projeto deve ser anterior à data real de término");
         }
         projetoRepository.save(projeto);
     }
