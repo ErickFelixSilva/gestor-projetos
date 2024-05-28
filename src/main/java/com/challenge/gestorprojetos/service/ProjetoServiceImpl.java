@@ -38,13 +38,13 @@ public class ProjetoServiceImpl implements ProjetoService {
         if (projeto.getStatus() == null) {
             throw new IllegalArgumentException("É necessário informar um status para o projeto");
         }
-        if (projeto.getGerenteResponsavel() == null) {
+        if (projeto.getGerente() == null) {
             throw new IllegalArgumentException("É necessário informar um gerente para o projeto");
         }
-        if (projeto.getDataInicio() != null && projeto.getDataInicio().isAfter(projeto.getPrevisaoTermino())) {
+        if (projeto.getDataInicio() != null && projeto.getDataInicio().isAfter(projeto.getDataPrevisaoFim())) {
             throw new IllegalArgumentException("A data inicial do projeto deve ser anterior à data prevista de término");
         }
-        if (projeto.getDataRealTermino() != null && projeto.getDataInicio().isAfter(projeto.getDataRealTermino())) {
+        if (projeto.getDataFim() != null && projeto.getDataInicio().isAfter(projeto.getDataFim())) {
             throw new IllegalArgumentException("A data inicial do projeto deve ser anterior à data real de término");
         }
         projetoRepository.save(projeto);

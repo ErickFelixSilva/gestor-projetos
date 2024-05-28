@@ -25,7 +25,7 @@
                     <tr>
                         <td>${projeto.nome}</td>
                         <td>${projeto.dataInicio}</td>
-                        <td>${projeto.previsaoTermino}</td>
+                        <td>${projeto.dataPrevisaoFim}</td>
                         <td>${projeto.status.descricao}</td>
                         <td>
                             <a href="/projetos/${projeto.id}" class="btn btn-primary">Detalhes</a>

@@ -1,7 +1,7 @@
 package com.challenge.gestorprojetos.service;
 
 import com.challenge.gestorprojetos.exception.ProjetoNaoEncontradoException;
-import com.challenge.gestorprojetos.model.Membro;
+import com.challenge.gestorprojetos.model.Pessoa;
 import com.challenge.gestorprojetos.model.Projeto;
 import com.challenge.gestorprojetos.model.Status;
 import com.challenge.gestorprojetos.repository.ProjetoRepository;
@@ -36,7 +36,7 @@ class ProjetoServiceImplTest {
         Projeto projeto = new Projeto();
         projeto.setNome("projeto-valido");
         projeto.setStatus(Status.EM_ANDAMENTO);
-        projeto.setGerenteResponsavel(new Membro());
+        projeto.setGerente(new Pessoa());
 
         assertDoesNotThrow(() -> projetoService.salvarProjeto(projeto));
         verify(projetoRepository, times(1)).save(projeto);
@@ -55,9 +55,9 @@ class ProjetoServiceImplTest {
         Projeto projeto = new Projeto();
         projeto.setNome("projeto-valido");
         projeto.setStatus(Status.EM_ANDAMENTO);
-        projeto.setGerenteResponsavel(new Membro());
+        projeto.setGerente(new Pessoa());
         projeto.setDataInicio(LocalDate.of(2024, 1, 10));
-        projeto.setPrevisaoTermino(LocalDate.of(2024, 1, 8));
+        projeto.setDataPrevisaoFim(LocalDate.of(2024, 1, 8));
 
         assertThrows(IllegalArgumentException.class, () -> projetoService.salvarProjeto(projeto));
         verify(projetoRepository, never()).save(any(Projeto.class));

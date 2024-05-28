@@ -6,37 +6,52 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Table(name = "projeto")
 public class Projeto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "nome", nullable = false, length = 200)
     private String nome;
+
+    @Column(name = "data_inicio")
     private LocalDate dataInicio;
-    private LocalDate previsaoTermino;
-    private LocalDate dataRealTermino;
-    private Double orcamentoTotal;
+
+    @Column(name = "data_previsao_fim")
+    private LocalDate dataPrevisaoFim;
+
+    @Column(name = "data_fim")
+    private LocalDate dataFim;
+
+    @Column(name = "descricao", length = 5000)
     private String descricao;
+
+    @Column(name = "status", length = 45)
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Status status;
 
+    @Column(name = "orcamento")
+    private Float orcamento;
+
+    @Column(name = "risco", length = 45)
     @Enumerated(EnumType.STRING)
     private Risco risco;
 
     @ManyToOne
-    @JoinColumn(name = "gerente_id", nullable = false)
-    private Membro gerenteResponsavel;
+    @JoinColumn(name = "idgerente", nullable = false)
+    private Pessoa gerente;
+
 
     @ManyToMany
     @JoinTable(
-            name = "projeto_funcionarios",
-            joinColumns = @JoinColumn(name = "projeto_id"),
-            inverseJoinColumns = @JoinColumn(name = "membro_id")
+            name = "membros",
+            joinColumns = @JoinColumn(name = "idprojeto"),
+            inverseJoinColumns = @JoinColumn(name = "idpessoa")
     )
-    private List<Membro> funcionarios;
+    private List<Pessoa> membros;
 
     public Long getId() {
         return id;
@@ -62,28 +77,20 @@ public class Projeto {
         this.dataInicio = dataInicio;
     }
 
-    public LocalDate getPrevisaoTermino() {
-        return previsaoTermino;
+    public LocalDate getDataPrevisaoFim() {
+        return dataPrevisaoFim;
     }
 
-    public void setPrevisaoTermino(LocalDate previsaoTermino) {
-        this.previsaoTermino = previsaoTermino;
+    public void setDataPrevisaoFim(LocalDate dataPrevisaoFim) {
+        this.dataPrevisaoFim = dataPrevisaoFim;
     }
 
-    public LocalDate getDataRealTermino() {
-        return dataRealTermino;
+    public LocalDate getDataFim() {
+        return dataFim;
     }
 
-    public void setDataRealTermino(LocalDate dataRealTermino) {
-        this.dataRealTermino = dataRealTermino;
-    }
-
-    public Membro getGerenteResponsavel() {
-        return gerenteResponsavel;
-    }
-
-    public void setGerenteResponsavel(Membro gerenteResponsavel) {
-        this.gerenteResponsavel = gerenteResponsavel;
+    public void setDataFim(LocalDate dataFim) {
+        this.dataFim = dataFim;
     }
 
     public String getDescricao() {
@@ -102,6 +109,14 @@ public class Projeto {
         this.status = status;
     }
 
+    public Float getOrcamento() {
+        return orcamento;
+    }
+
+    public void setOrcamento(Float orcamento) {
+        this.orcamento = orcamento;
+    }
+
     public Risco getRisco() {
         return risco;
     }
@@ -110,19 +125,19 @@ public class Projeto {
         this.risco = risco;
     }
 
-    public Double getOrcamentoTotal() {
-        return orcamentoTotal;
+    public Pessoa getGerente() {
+        return gerente;
     }
 
-    public void setOrcamentoTotal(Double orcamentoTotal) {
-        this.orcamentoTotal = orcamentoTotal;
+    public void setGerente(Pessoa gerente) {
+        this.gerente = gerente;
     }
 
-    public List<Membro> getFuncionarios() {
-        return funcionarios;
+    public List<Pessoa> getMembros() {
+        return membros;
     }
 
-    public void setFuncionarios(List<Membro> funcionarios) {
-        this.funcionarios = funcionarios;
+    public void setMembros(List<Pessoa> membros) {
+        this.membros = membros;
     }
 }

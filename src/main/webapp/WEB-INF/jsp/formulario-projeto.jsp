@@ -30,23 +30,23 @@
             <input type="date" class="form-control" id="dataInicio" name="dataInicio" value="${projeto.dataInicio}" required />
         </div>
         <div class="form-group">
-            <label for="previsaoTermino">Data prevista término*</label>
-            <input type="date" class="form-control" id="previsaoTermino" name="previsaoTermino" value="${projeto.previsaoTermino}" required />
+            <label for="dataPrevisaoFim">Data prevista término*</label>
+            <input type="date" class="form-control" id="dataPrevisaoFim" name="dataPrevisaoFim" value="${projeto.dataPrevisaoFim}" required />
         </div>
         <div class="form-group">
             <label for="dataRealTermino">Data real término</label>
-            <input type="date" class="form-control" id="dataRealTermino" name="dataRealTermino" value="${projeto.dataRealTermino}" />
+            <input type="date" class="form-control" id="dataRealTermino" name="dataRealTermino" value="${projeto.dataFim}" />
         </div>
         <div class="d-flex flex-column form-group">
             <label for="orcamentoTotal">Valor em Reais</label>
-            <input class="p-1" type="text" id="orcamentoTotal" value="${projeto.orcamentoTotal}"
+            <input class="p-1" type="text" id="orcamentoTotal" value="${projeto.orcamento}"
                 name="valorOrcamento" oninput="formatoMonetario(this)" placeholder="R$ 0,00" required>
         </div>
         <div class="form-group">
-            <label for="gerenteResponsavel">Gerente responsável*</label>
-            <select class="form-control" id="gerenteResponsavel" name="gerenteResponsavel" required ${membros.isEmpty() ? 'disabled' : ''}>
-                <c:forEach var="membro" items="${membros}">
-                    <option value="${membro.id}" ${membro.id == projeto.gerenteResponsavel.id ? 'selected' : ''}>${membro.nome}</option>
+            <label for="gerente">Gerente responsável*</label>
+            <select class="form-control" id="gerente" name="gerente" required ${gerentes.isEmpty() ? 'disabled' : ''}>
+                <c:forEach var="gerente" items="${gerentes}">
+                    <option value="${gerente.id}" ${gerente.id == projeto.gerente.id ? 'selected' : ''}>${gerente.nome}</option>
                 </c:forEach>
             </select>
             <c:if test="${membros.isEmpty()}">

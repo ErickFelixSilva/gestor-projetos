@@ -1,7 +1,7 @@
 package com.challenge.gestorprojetos.controller.web;
 
 import com.challenge.gestorprojetos.model.*;
-import com.challenge.gestorprojetos.service.MembroService;
+import com.challenge.gestorprojetos.service.PessoaService;
 import com.challenge.gestorprojetos.service.ProjetoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,12 +16,12 @@ import java.util.stream.Collectors;
 public class ProjetoController {
 
     private final ProjetoService projetoService;
-    private final MembroService membroService;
+    private final PessoaService pessoaService;
 
     @Autowired
-    public ProjetoController(ProjetoService projetoService, MembroService membroService) {
+    public ProjetoController(ProjetoService projetoService, PessoaService pessoaService) {
         this.projetoService = projetoService;
-        this.membroService = membroService;
+        this.pessoaService = pessoaService;
     }
 
     @GetMapping
@@ -42,9 +42,9 @@ public class ProjetoController {
                                 @RequestParam(name = "funcionarios", required = false) List<String> funcionariosSelecionados,
                                 @RequestParam(name = "valorOrcamento", required = false) String valorOrcamento) {
         var idsFuncionariosSelecionados = Optional.ofNullable(funcionariosSelecionados).map(f -> f.stream().map(Long::valueOf).toList()).orElse(Collections.emptyList());
-        var funcinariosSelecionados = membroService.membrosPorId(idsFuncionariosSelecionados);
-        projeto.setFuncionarios(funcinariosSelecionados);
-        projeto.setOrcamentoTotal(removerFormatoMonetario(valorOrcamento));
+        var funcinariosSelecionados = pessoaService.pessoasPorId(idsFuncionariosSelecionados);
+        projeto.setMembros(funcinariosSelecionados);
+        projeto.setOrcamento(removerFormatoMonetario(valorOrcamento));
         projetoService.salvarProjeto(projeto);
         return "redirect:/projetos";
     }
@@ -59,9 +59,9 @@ public class ProjetoController {
     @GetMapping("/{id}")
     public String detalharProjeto(@PathVariable Long id, Model model) {
         Projeto projeto = projetoService.projetoPorId(id);
-        String funcionarios = projeto.getFuncionarios().stream().map(Membro::toString).collect(Collectors.joining(", "));
+        String membros = projeto.getMembros().stream().map(Pessoa::toString).collect(Collectors.joining(", "));
         model.addAttribute("projeto", projeto);
-        model.addAttribute("funcionarios", funcionarios);
+        model.addAttribute("membros", membros);
         return "detalhes-projeto";
     }
 
@@ -73,27 +73,27 @@ public class ProjetoController {
     }
 
     private void carregarModelo(Model model, Projeto projeto) {
-        var funcionarios = membroService.recuperarFuncionarios().stream().map(f -> {
+        var funcionarios = pessoaService.recuperarFuncionarios().stream().map(f -> {
             var selecionado = Optional.ofNullable(projeto)
-                    .map(p -> p.getFuncionarios().contains(f))
+                    .map(p -> p.getMembros().contains(f))
                     .orElse(false);
             return new Item(f.getId().toString(), f.getNome(), selecionado);
         }).toList();
-        var orcamento = Optional.ofNullable(projeto).map(Projeto::getOrcamentoTotal).orElse(0d);
+        var orcamento = Optional.ofNullable(projeto).map(Projeto::getOrcamento).orElse(0f);
 
         model.addAttribute("projeto", Optional.ofNullable(projeto).orElse(new Projeto()));
         model.addAttribute("todosStatus", Status.values());
         model.addAttribute("riscos", Risco.values());
-        model.addAttribute("membros", membroService.recuperarMembros());
+        model.addAttribute("gerentes", pessoaService.recuperarGerentes());
         model.addAttribute("valorOrcamento", orcamento.toString());
         model.addAttribute("funcionarios", funcionarios);
     }
 
-    private Double removerFormatoMonetario(String valorMonetario) {
+    private Float removerFormatoMonetario(String valorMonetario) {
         if (valorMonetario != null) {
             valorMonetario = valorMonetario.replaceAll("[^\\d,]", "").replace(",", ".");
             try {
-                return Double.parseDouble(valorMonetario);
+                return Float.parseFloat(valorMonetario);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Valor inválido: " + valorMonetario);
             }
