@@ -23,7 +23,7 @@ class PessoaServiceImplTest {
     PessoaRepository pessoaRepository;
 
     @InjectMocks
-    PessoaServiceImpl membroService;
+    PessoaServiceImpl pessoaService;
 
     @BeforeEach
     void setUp() {
@@ -31,59 +31,59 @@ class PessoaServiceImplTest {
     }
 
     @Test
-    void deveSalvarMembro() {
-        Pessoa membro = new Pessoa();
-        membro.setNome("Carlos Andrade");
+    void deveSalvarPessoa() {
+        Pessoa pessoa = new Pessoa();
+        pessoa.setNome("Carlos Andrade");
 
-        assertDoesNotThrow(() -> membroService.salvarPessoa(membro));
-        verify(pessoaRepository, times(1)).save(membro);
+        assertDoesNotThrow(() -> pessoaService.salvarPessoa(pessoa));
+        verify(pessoaRepository, times(1)).save(pessoa);
     }
 
     @Test
-    void naoDeveSalvarMembro() {
-        Pessoa membro = new Pessoa();
+    void naoDeveSalvarPessoa() {
+        Pessoa pessoa = new Pessoa();
 
-        assertThrows(IllegalArgumentException.class, () -> membroService.salvarPessoa(membro));
+        assertThrows(IllegalArgumentException.class, () -> pessoaService.salvarPessoa(pessoa));
         verify(pessoaRepository, never()).save(any(Pessoa.class));
     }
 
     @Test
-    void deveRecuperarMembroPorId() {
+    void deveRecuperarPessoaPorId() {
         when(pessoaRepository.findById(anyLong())).thenReturn(Optional.of(new Pessoa()));
 
-        assertDoesNotThrow(() -> membroService.pessoarPorId(1L));
+        assertDoesNotThrow(() -> pessoaService.pessoarPorId(1L));
         verify(pessoaRepository, times(1)).findById(anyLong());
     }
 
     @Test
-    void naoDeveRecuperarMembroInexistentePorId() {
+    void naoDeveRecuperarPessoaInexistentePorId() {
         when(pessoaRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(PessoaNaoEncontradaException.class, () -> membroService.pessoarPorId(1L));
+        assertThrows(PessoaNaoEncontradaException.class, () -> pessoaService.pessoarPorId(1L));
         verify(pessoaRepository, times(1)).findById(anyLong());
     }
 
     @Test
-    void deveRecuperarMembrosPorId() {
-        assertDoesNotThrow(() -> membroService.pessoasPorId(List.of(1L, 2L)));
+    void deveRecuperarPessoasPorId() {
+        assertDoesNotThrow(() -> pessoaService.pessoasPorId(List.of(1L, 2L)));
         verify(pessoaRepository, times(1)).findAllById(anyCollection());
     }
 
     @Test
-    void deveRecuperarMembros() {
-        assertDoesNotThrow(() -> membroService.recuperarPessoas());
-        verify(pessoaRepository, times(1)).findAll();
+    void deveRecuperarGerentes() {
+        assertDoesNotThrow(() -> pessoaService.recuperarGerentes());
+        verify(pessoaRepository, times(1)).findByGerenteTrue();
     }
 
     @Test
-    void deveRecuperarMembrosFuncionarios() {
-        assertDoesNotThrow(() -> membroService.recuperarFuncionarios());
+    void deveRecuperarPessoasFuncionarios() {
+        assertDoesNotThrow(() -> pessoaService.recuperarFuncionarios());
         verify(pessoaRepository, times(1)).findByFuncionarioTrue();
     }
 
     @Test
-    void deveExcluirMembro() {
-        assertDoesNotThrow(() -> membroService.excluirPessoa(new Pessoa()));
+    void deveExcluirPessoa() {
+        assertDoesNotThrow(() -> pessoaService.excluirPessoa(new Pessoa()));
         verify(pessoaRepository, times(1)).delete(any(Pessoa.class));
     }
 
