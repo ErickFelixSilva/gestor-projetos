@@ -2,6 +2,7 @@ package com.challenge.gestorprojetos.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class Projeto {
     private Status status;
 
     @Column(name = "orcamento")
-    private Float orcamento;
+    private BigDecimal orcamento;
 
     @Column(name = "risco", length = 45)
     @Enumerated(EnumType.STRING)
@@ -109,11 +110,11 @@ public class Projeto {
         this.status = status;
     }
 
-    public Float getOrcamento() {
+    public BigDecimal getOrcamento() {
         return orcamento;
     }
 
-    public void setOrcamento(Float orcamento) {
+    public void setOrcamento(BigDecimal orcamento) {
         this.orcamento = orcamento;
     }
 

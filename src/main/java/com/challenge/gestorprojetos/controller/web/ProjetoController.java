@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -79,7 +81,7 @@ public class ProjetoController {
                     .orElse(false);
             return new Item(f.getId().toString(), f.getNome(), selecionado);
         }).toList();
-        var orcamento = Optional.ofNullable(projeto).map(Projeto::getOrcamento).orElse(0f);
+        var orcamento = Optional.ofNullable(projeto).map(p -> p.getOrcamento().setScale(2, RoundingMode.HALF_UP)).orElse(new BigDecimal(0));
 
         model.addAttribute("projeto", Optional.ofNullable(projeto).orElse(new Projeto()));
         model.addAttribute("todosStatus", Status.values());
@@ -89,11 +91,11 @@ public class ProjetoController {
         model.addAttribute("funcionarios", funcionarios);
     }
 
-    private Float removerFormatoMonetario(String valorMonetario) {
+    private BigDecimal removerFormatoMonetario(String valorMonetario) {
         if (valorMonetario != null) {
             valorMonetario = valorMonetario.replaceAll("[^\\d,]", "").replace(",", ".");
             try {
-                return Float.parseFloat(valorMonetario);
+                return new BigDecimal(valorMonetario).setScale(2, RoundingMode.HALF_UP);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Valor inválido: " + valorMonetario);
             }

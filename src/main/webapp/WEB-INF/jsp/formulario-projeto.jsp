@@ -6,14 +6,30 @@
     <title>Formulário Projeto</title>
     <link rel="stylesheet" href="/webjars/bootstrap/4.5.2/css/bootstrap.min.css">
     <script>
-        function formatoMonetario(input) {
-            let value = input.value.replace(/\D/g, '');
-            value = (value / 100).toLocaleString('pt-BR', {
+        function formatarValorParaMoedaBRL(valor) {
+            valor = (valor / 100).toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL'
             });
-            input.value = value;
+            return valor;
         }
+
+        function formatoMonetario(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value) {
+                input.value = formatarValorParaMoedaBRL(value);
+            }
+        }
+
+        function formatarOrcamentoInicial() {
+            const orcamentoInput = document.getElementById('orcamentoTotal');
+            if (orcamentoInput && orcamentoInput.value) {
+                let value = parseFloat(orcamentoInput.value.replace(',', '.')) * 100;
+                orcamentoInput.value = formatarValorParaMoedaBRL(value);
+            }
+        }
+
+        window.onload = formatarOrcamentoInicial;
     </script>
 </head>
 <body>
